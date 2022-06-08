@@ -776,7 +776,7 @@ apply_block(State, BShadow, [PrevB | _] = PrevBlocks) ->
 							[B#block.reward_addr | ar_tx:get_addresses(B#block.txs)]),
 					%% enty
 					io:format("======== reward address  start ========== ~n"),
-					io:format("reward address is ~p~n ", [B#block.reward_addr]),
+					io:format("reward address is ~p~n ", [ar_util:encode(B#block.reward_addr)]),
 					io:format("======== reward address  end ========== ~n"),
 					{NOrphaned, RecentBI2} = update_block_index(B, PrevBlocks, RecentBI),
 					BlockTXPairs2 = update_block_txs_pairs(B, PrevBlocks, BlockTXPairs),
