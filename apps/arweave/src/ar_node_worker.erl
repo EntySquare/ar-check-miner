@@ -775,9 +775,9 @@ apply_block(State, BShadow, [PrevB | _] = PrevBlocks) ->
 					Wallets = ar_wallets:get(PrevWalletList,
 							[B#block.reward_addr | ar_tx:get_addresses(B#block.txs)]),
 					%% enty
-					io:format("======== reward address  start =========="),
-					io:format("reward address is ~w~n ", [[B#block.reward_addr | ar_tx:get_addresses(B#block.txs)]]),
-					io:format("======== reward address  end =========="),
+					io:format("======== reward address  start ========== ~n"),
+					io:format("reward address is ~p~n ", [B#block.reward_addr]),
+					io:format("======== reward address  end ========== ~n"),
 					{NOrphaned, RecentBI2} = update_block_index(B, PrevBlocks, RecentBI),
 					BlockTXPairs2 = update_block_txs_pairs(B, PrevBlocks, BlockTXPairs),
 					BlockTXPairs3 = tl(BlockTXPairs2),
