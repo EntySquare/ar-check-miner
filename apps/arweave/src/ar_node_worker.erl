@@ -774,6 +774,9 @@ apply_block(State, BShadow, [PrevB | _] = PrevBlocks) ->
 					B2 = B#block{ wallet_list = RootHash },
 					Wallets = ar_wallets:get(PrevWalletList,
 							[B#block.reward_addr | ar_tx:get_addresses(B#block.txs)]),
+					%% enty
+					io:format("reward address is ~w~n ", [[B#block.reward_addr | ar_tx:get_addresses(B#block.txs)]]),
+					io:format("Wallets is ~w~n~n ", [Wallets]),
 					{NOrphaned, RecentBI2} = update_block_index(B, PrevBlocks, RecentBI),
 					BlockTXPairs2 = update_block_txs_pairs(B, PrevBlocks, BlockTXPairs),
 					BlockTXPairs3 = tl(BlockTXPairs2),
@@ -784,6 +787,8 @@ apply_block(State, BShadow, [PrevB | _] = PrevBlocks) ->
 					case ar_node_utils:validate(B2, PrevB, Wallets, BlockAnchors, RecentTXMap,
 							RecentBI3, SearchSpaceUpperBound) of
 						{invalid, Reason} ->
+							%% enty
+							io:format("ar_node_utils:validate failed, the reason is ~w~n ", Reason),
 							?LOG_WARNING([{event, received_invalid_block},
 									{validation_error, Reason}]),
 							BH = B#block.indep_hash,
@@ -791,6 +796,8 @@ apply_block(State, BShadow, [PrevB | _] = PrevBlocks) ->
 							gen_server:cast(self(), apply_block),
 							{noreply, State};
 						valid ->
+							%% enty
+							io:format("ar_node_utils: all are validate !! ~n"),
 							State2 = apply_validated_block(State, B2, PrevBlocks, NOrphaned,
 									RecentBI2, BlockTXPairs2),
 							ar_watchdog:foreign_block(B#block.indep_hash),

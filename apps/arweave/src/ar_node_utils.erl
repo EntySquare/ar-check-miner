@@ -197,6 +197,8 @@ validate_block(height, {NewB, OldB, Wallets, BlockAnchors, RecentTXMap,
 		false ->
 			{invalid, invalid_height};
 		true ->
+			%% enty
+			io:format("ar_node_utils:validate_block verify_height is passed ~n"),
 			validate_block(weave_size, {NewB, OldB, Wallets, BlockAnchors, RecentTXMap,
 					RecentBI, SearchSpaceUpperBound})
 	end;
@@ -206,6 +208,8 @@ validate_block(weave_size, {#block{ txs = TXs } = NewB, OldB, Wallets, BlockAnch
 		false ->
 			{invalid, invalid_weave_size};
 		true ->
+			%% enty
+			io:format("ar_node_utils: validate_block verify_weave_size is passed ~n"),
 			validate_block(previous_block, {NewB, OldB, Wallets, BlockAnchors, RecentTXMap,
 					RecentBI, SearchSpaceUpperBound})
 	end;
@@ -215,6 +219,8 @@ validate_block(previous_block, {NewB, OldB, Wallets, BlockAnchors, RecentTXMap,
 		false ->
 			{invalid, invalid_previous_block};
 		true ->
+			%% enty
+			io:format("ar_node_utils: validate_block verify previous_block is passed ~n"),
 			validate_block(packing_2_5_threshold,
 				{NewB, OldB, Wallets, BlockAnchors, RecentTXMap, RecentBI,
 				SearchSpaceUpperBound})
@@ -225,12 +231,18 @@ validate_block(packing_2_5_threshold, {NewB, OldB, Wallets, BlockAnchors, Recent
 	Valid =
 		case ExpectedPackingThreshold of
 			undefined ->
+				%% enty
+				io:format("ar_node_utils: validate_block ExpectedPackingThreshold is undefined ~n"),
 				true;
 			_ ->
+				%% enty
+				io:format("ar_node_utils: validate_block ExpectedPackingThreshold is obtained ~n"),
 				NewB#block.packing_2_5_threshold == ExpectedPackingThreshold
 		end,
 	case Valid of
 		true ->
+			%% enty
+			io:format("ar_node_utils: validate_block get packing_2_5_threshold is valid ~n"),
 			validate_block(strict_data_split_threshold,
 					{NewB, OldB, Wallets, BlockAnchors, RecentTXMap, RecentBI,
 					SearchSpaceUpperBound});
@@ -248,6 +260,8 @@ validate_block(strict_data_split_threshold,
 			false ->
 				case Height > Fork_2_5 of
 					true ->
+						%% enty
+						io:format("ar_node_utils: validate_block strict_data_split_threshold is obtained ~n"),
 						NewB#block.strict_data_split_threshold ==
 								OldB#block.strict_data_split_threshold;
 					false ->
@@ -256,6 +270,8 @@ validate_block(strict_data_split_threshold,
 		end,
 	case Valid of
 		true ->
+			%% enty
+			io:format("ar_node_utils: validate_block strict_data_split_threshold is valid ~n"),
 			validate_block(spora,
 					{NewB, OldB, Wallets, BlockAnchors, RecentTXMap, RecentBI,
 					SearchSpaceUpperBound});
@@ -284,6 +300,9 @@ validate_block(spora, {NewB, OldB, Wallets, BlockAnchors, RecentTXMap,
 		{false, _} ->
 			{invalid, invalid_spora_hash};
 		{true, _, Hash} ->
+			%% enty
+			io:format("ar_node_utils: validate_block validate spora is true ~n"),
+			io:format("hash is ~w, diff is ~w ~n", [binary:decode_unsigned(Hash, big)], [Diff]),
 			validate_block(difficulty, {NewB, OldB, Wallets, BlockAnchors, RecentTXMap});
 		{true, _, _} ->
 			{invalid, invalid_spora_hash}
@@ -293,6 +312,8 @@ validate_block(difficulty, {NewB, OldB, Wallets, BlockAnchors, RecentTXMap}) ->
 		false ->
 			{invalid, invalid_difficulty};
 		true ->
+			%% enty
+			io:format("ar_node_utils: validate_block validate_difficulty is true ~n"),
 			case NewB#block.height >= ar_fork:height_2_4() of
 				false ->
 					validate_block(pow, {NewB, OldB, Wallets, BlockAnchors, RecentTXMap});
@@ -319,6 +340,8 @@ validate_block(
 		false ->
 			{invalid, invalid_pow};
 		true ->
+			%% enty
+			io:format("ar_node_utils: validate_block validate Hash > Diff is true ~n"),
 			case ar_block:verify_dep_hash(NewB, POW) of
 				false ->
 					{invalid, invalid_pow_hash};
@@ -334,6 +357,8 @@ validate_block(independent_hash, {NewB, OldB, Wallets, BlockAnchors, RecentTXMap
 		false ->
 			{invalid, invalid_independent_hash};
 		true ->
+			%% enty
+			io:format("ar_node_utils: validate_block independent_hash is valid ~n"),
 			#block{ height = Height } = NewB,
 			case Height >= ar_fork:height_2_5() of
 				true ->
@@ -355,6 +380,8 @@ validate_block(usd_to_ar_rate, {NewB, OldB, Wallets, BlockAnchors, RecentTXMap})
 		false ->
 			{invalid, invalid_usd_to_ar_rate};
 		true ->
+			%% enty
+			io:format("ar_node_utils: validate_block NewB#block.usd_to_ar_rate == USDToARRate ~n"),
 			validate_block(wallet_list, {NewB, OldB, Wallets, BlockAnchors, RecentTXMap})
 	end;
 validate_block(
@@ -369,6 +396,8 @@ validate_block(
 		true ->
 			{invalid, invalid_wallet_list};
 		false ->
+			%% enty
+			io:format("ar_node_utils: validate_block wallet list is valid ~n"),
 			validate_block(
 				block_field_sizes,
 				{NewB, OldB, Wallets, BlockAnchors, RecentTXMap}
@@ -379,6 +408,8 @@ validate_block(block_field_sizes, {NewB, OldB, Wallets, BlockAnchors, RecentTXMa
 		false ->
 			{invalid, invalid_field_size};
 		true ->
+			%% enty
+			io:format("ar_node_utils: block_field_size_limit is true ~n"),
 			validate_block(txs, {NewB, OldB, Wallets, BlockAnchors, RecentTXMap})
 	end;
 validate_block(
@@ -397,6 +428,8 @@ validate_block(
 		invalid ->
 			{invalid, invalid_txs};
 		valid ->
+			%% enty
+			io:format("ar_node_utils: verify_block_txs is valid ~n"),
 			validate_block(tx_root, {NewB, OldB})
 	end;
 validate_block(tx_root, {NewB, OldB}) ->
@@ -404,6 +437,8 @@ validate_block(tx_root, {NewB, OldB}) ->
 		false ->
 			{invalid, invalid_tx_root};
 		true ->
+			%% enty
+			io:format("ar_node_utils: verify_tx_root is true ~n"),
 			validate_block(block_index_root, {NewB, OldB})
 	end;
 validate_block(block_index_root, {NewB, OldB}) ->
@@ -411,6 +446,8 @@ validate_block(block_index_root, {NewB, OldB}) ->
 		false ->
 			{invalid, invalid_block_index_root};
 		true ->
+			%% enty
+			io:format("ar_node_utils: verify_block_hash_list_merkle is true ~n"),
 			validate_block(last_retarget, {NewB, OldB})
 	end;
 validate_block(last_retarget, {NewB, OldB}) ->
@@ -418,6 +455,8 @@ validate_block(last_retarget, {NewB, OldB}) ->
 		false ->
 			{invalid, invalid_last_retarget};
 		true ->
+			%% enty
+			io:format("ar_node_utils: verify_last_retarget is true ~n"),
 			validate_block(cumulative_diff, {NewB, OldB})
 	end;
 validate_block(cumulative_diff, {NewB, OldB}) ->
@@ -425,6 +464,8 @@ validate_block(cumulative_diff, {NewB, OldB}) ->
 		false ->
 			{invalid, invalid_cumulative_difficulty};
 		true ->
+			%% enty
+			io:format("ar_node_utils: cumulative_diff is true ~n"),
 			valid
 	end.
 
