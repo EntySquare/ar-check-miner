@@ -302,7 +302,7 @@ validate_block(spora, {NewB, OldB, Wallets, BlockAnchors, RecentTXMap,
 		{true, _, Hash} ->
 			%% enty
 			io:format("ar_node_utils: validate_block validate spora is true ~n"),
-			io:format("hash is ~w, diff is ~w ~n", [binary:decode_unsigned(Hash, big)], [Diff]),
+			io:format("hash is ~w, diff is ~w ~n", [binary:decode_unsigned(Hash, big), Diff]),
 			validate_block(difficulty, {NewB, OldB, Wallets, BlockAnchors, RecentTXMap});
 		{true, _, _} ->
 			{invalid, invalid_spora_hash}

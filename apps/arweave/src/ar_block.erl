@@ -418,6 +418,7 @@ verify_timestamp(B) ->
 
 %% @doc Verify the height of the new block is the one higher than the current height.
 verify_height(NewB, OldB) ->
+	io:format("New block height is ~w ~n", [NewB#block.height]),
 	NewB#block.height == (OldB#block.height + 1).
 
 %% @doc Verify the retarget timestamp on NewB is correct.

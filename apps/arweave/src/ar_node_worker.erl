@@ -775,8 +775,9 @@ apply_block(State, BShadow, [PrevB | _] = PrevBlocks) ->
 					Wallets = ar_wallets:get(PrevWalletList,
 							[B#block.reward_addr | ar_tx:get_addresses(B#block.txs)]),
 					%% enty
+					io:format("======== reward address  start =========="),
 					io:format("reward address is ~w~n ", [[B#block.reward_addr | ar_tx:get_addresses(B#block.txs)]]),
-					io:format("Wallets is ~w~n~n ", [Wallets]),
+					io:format("======== reward address  end =========="),
 					{NOrphaned, RecentBI2} = update_block_index(B, PrevBlocks, RecentBI),
 					BlockTXPairs2 = update_block_txs_pairs(B, PrevBlocks, BlockTXPairs),
 					BlockTXPairs3 = tl(BlockTXPairs2),
@@ -788,7 +789,7 @@ apply_block(State, BShadow, [PrevB | _] = PrevBlocks) ->
 							RecentBI3, SearchSpaceUpperBound) of
 						{invalid, Reason} ->
 							%% enty
-							io:format("ar_node_utils:validate failed, the reason is ~w~n ", Reason),
+							io:format("ar_node_utils:validate failed, the reason is ~w~n ", [Reason]),
 							?LOG_WARNING([{event, received_invalid_block},
 									{validation_error, Reason}]),
 							BH = B#block.indep_hash,
